@@ -119,9 +119,9 @@ pub fn get_process_id_by_name(target_process: &str) -> usize {
     system.refresh_all();
 
     let mut process_id: usize = 0;
-
-    for process in system.process_by_name(target_process) {
-        process_id = process.pid();
+    //updated process_by_name --> processes_by_name since sysinfo crate updated
+    for process in system.processes_by_name(target_process) {
+        process_id = process.pid().into();
     }
     return process_id;
 }
@@ -163,7 +163,7 @@ pub unsafe fn get_nt_headers(module_base: *mut u8) -> Option<*mut IMAGE_NT_HEADE
 
     return Some(nt_headers);
 }
-
+/* 
 /// Gets a pointer to the Thread Environment Block (TEB)
 #[cfg(target_arch = "x86")]
 pub unsafe fn get_teb() -> *mut ntapi::ntpebteb::TEB {
@@ -171,7 +171,7 @@ pub unsafe fn get_teb() -> *mut ntapi::ntpebteb::TEB {
     asm!("mov {teb}, fs:[0x18]", teb = out(reg) teb);
     teb
 }
-
+*/
 /// Get a pointer to the Thread Environment Block (TEB)
 #[cfg(target_arch = "x86_64")]
 pub unsafe fn get_teb() -> *mut ntapi::ntpebteb::TEB {

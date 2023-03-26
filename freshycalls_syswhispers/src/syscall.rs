@@ -4,7 +4,7 @@
 
 #[allow(unused_imports)]
 use std::arch::global_asm;
-
+/*
 #[cfg(all(feature = "_DIRECT_", not(feature = "_INDIRECT_")))]
 #[macro_export]
 macro_rules! syscall {
@@ -19,7 +19,7 @@ macro_rules! syscall {
         freshycalls_syswhispers::syscall::do_syscall(ssn, cnt, $($y), +)
     }}
 }
-
+ */
 #[cfg(all(feature = "_INDIRECT_", not(feature = "_DIRECT_")))]
 #[macro_export]
 macro_rules! syscall {
@@ -34,7 +34,7 @@ macro_rules! syscall {
         freshycalls_syswhispers::syscall::do_syscall(ssn, addr, cnt, $($y), +)
     }}
 }
-
+/*
 #[cfg(target_arch = "x86_64")]
 #[cfg(all(feature = "_DIRECT_", not(feature = "_INDIRECT_")))]
 global_asm!(
@@ -73,7 +73,7 @@ skip:
     ret
 "
 );
-
+*/
 #[cfg(target_arch = "x86_64")]
 #[cfg(all(feature = "_INDIRECT_", not(feature = "_DIRECT_")))]
 global_asm!(
@@ -114,7 +114,7 @@ skip:
     jmp rcx
 "
 );
-
+/* 
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "_DIRECT_", not(feature = "_INDIRECT_")))]
 global_asm!(
@@ -208,19 +208,20 @@ native:
 is_wow64:
 "
 );
-
+*/
+/* 
 #[cfg(target_arch = "x86_64")]
 #[cfg(all(feature = "_DIRECT_", not(feature = "_INDIRECT_")))]
 extern "C" {
     pub fn do_syscall(ssn: u16, n_args: u32, ...) -> i32;
 }
-
+*/
 #[cfg(target_arch = "x86_64")]
 #[cfg(all(feature = "_INDIRECT_", not(feature = "_DIRECT_")))]
 extern "C" {
     pub fn do_syscall(ssn: u16, syscall_addr: u64, n_args: u32, ...) -> i32;
 }
-
+/*
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "_DIRECT_", not(feature = "_INDIRECT_")))]
 extern "C" {
@@ -232,3 +233,4 @@ extern "C" {
 extern "C" {
     pub fn do_syscall(ssn: u16, n_args: u32, syscall_addr: u32, ...) -> i32;
 }
+ */
