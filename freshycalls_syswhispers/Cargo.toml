@@ -12,14 +12,18 @@ _INDIRECT_ = []
 _DIRECT_ = []
 
 [dependencies]
-env_logger = "0.9.0"
-log = "0.4.17"
-sysinfo = "0.20.4"
-obfstr = "0.3.0"
-ntapi = { version = "0.4.0", features = ["impl-default"] }
+env_logger = "0.10.0"
+log = "0.4.20"
+sysinfo = "0.29.10"
+obfstr = "0.4.3"
+ntapi = { version = "0.4.1", features = ["impl-default"] }
+
+[dependencies.windows]
+windows = "0.53.0"
+features = ["Win32_System_Diagnostics_Debug","Win32_System_SystemInformation"]
 
 [dependencies.windows-sys]
-version = "0.36.1"
+version = "0.48.0"
 features = [
     "Win32_Foundation",
     "Win32_Security",
@@ -30,4 +34,5 @@ features = [
     "Win32_System_SystemServices",
     "Win32_System_WindowsProgramming",
     "Win32_System_LibraryLoader",
+    "Win32_System_SystemInformation"
 ]

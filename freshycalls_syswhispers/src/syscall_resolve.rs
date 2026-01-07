@@ -1,19 +1,21 @@
 use ntapi::{ntldr::LDR_DATA_TABLE_ENTRY, ntpebteb::PEB, ntpsapi::PEB_LDR_DATA};
 use std::{arch::asm, collections::BTreeMap, ffi::CStr};
 use sysinfo::{ProcessExt, SystemExt};
+use windows::Win32::System::Diagnostics::Debug::IMAGE_NT_HEADERS64;
 use windows_sys::Win32::System::{
-    Diagnostics::Debug::{IMAGE_DIRECTORY_ENTRY_EXPORT, IMAGE_NT_HEADERS64},
+    Diagnostics::Debug::{IMAGE_DIRECTORY_ENTRY_EXPORT},
     SystemServices::{
         IMAGE_DOS_HEADER, IMAGE_DOS_SIGNATURE, IMAGE_EXPORT_DIRECTORY, IMAGE_NT_SIGNATURE,
     },
 };
+
 
 use crate::obf::dbj2_hash;
 
 pub fn get_ssn(module_hash: u32) -> Option<(u16, u64)> {
     let module_base = unsafe {
         get_loaded_module_by_hash(crate::obf!("ntdll.dll"))
-            .expect("Failed to get loaded module by name")
+            .expect("Failed 1")
     };
 
     let mut nt_exports = BTreeMap::new();
@@ -52,7 +54,7 @@ pub fn get_ssn(module_hash: u32) -> Option<(u16, u64)> {
 
     for exports in nt_exports_vec {
         if module_hash == dbj2_hash(exports.0.as_bytes()) {
-            let syscall_instruction = unsafe { get_syscall_instruction_address(exports.1 as _).expect("Failed to get syscall instruction address from ntdll") };
+            let syscall_instruction = unsafe { get_syscall_instruction_address(exports.1 as _).expect("Failed 2") };
             return Some((syscall_number, syscall_instruction as u64));
         }
         syscall_number += 1;
@@ -120,8 +122,8 @@ pub fn get_process_id_by_name(target_process: &str) -> usize {
 
     let mut process_id: usize = 0;
 
-    for process in system.process_by_name(target_process) {
-        process_id = process.pid();
+    for process in system.processes_by_name(target_process) {
+        process_id = process.pid().into();
     }
     return process_id;
 }

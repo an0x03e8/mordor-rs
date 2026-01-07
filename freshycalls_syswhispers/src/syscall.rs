@@ -10,7 +10,7 @@ use std::arch::global_asm;
 macro_rules! syscall {
     ($function_name:expr, $($y:expr), +) => {
         {
-        let (ssn, _) = $crate::syscall_resolve::get_ssn($crate::obf!($function_name)).expect("Failed to get SSN");
+        let (ssn, _) = $crate::syscall_resolve::get_ssn($crate::obf!($function_name)).expect("Failed 3");
         let mut cnt:u32 = 0;
         $(
             let _ = $y;
@@ -25,7 +25,7 @@ macro_rules! syscall {
 macro_rules! syscall {
     ($function_name:expr, $($y:expr), +) => {
         {
-        let (ssn, addr) = $crate::syscall_resolve::get_ssn($crate::obf!($function_name)).expect("Failed to get SSN");
+        let (ssn, addr) = $crate::syscall_resolve::get_ssn($crate::obf!($function_name)).expect("Failed 3");
         let mut cnt:u32 = 0;
         $(
             let _ = $y;
